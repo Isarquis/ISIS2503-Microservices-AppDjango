@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.urls import reverse
+from ofipensiones.auth0backend import getRole
 from django.conf import settings
 import requests
 import json
@@ -24,6 +25,20 @@ def get_place_id(data):
             return place["id"]
     return -1
 
+@csrf_exempt
+def estudiantes_estudiante_view(request, id):
+    role=getRole(request)
+    if role=="Estudiante":
+        if request.method=='GET':
+            
+            estudiantes=le.get_estudiantes(id)
+            if estudiantes.correo==request.user.email:
+                return HttpResponse(estudiantes, 'application/json')
+            else:
+                return HttpResponse("No tiene acceso")
+    else:
+        return HttpResponse("No tiene acceso")
+    
 def MeasurementList(request):
     queryset = Measurement.objects.all()
     context = list(queryset.values('id', 'variable', 'value', 'unit', 'place', 'dateTime'))

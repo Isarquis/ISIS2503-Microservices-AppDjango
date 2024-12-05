@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'measurements',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,35 @@ STATICFILES_DIRS = (
 
 PATH_API_GATEWAY = "http://" + os.environ.get("KONG_HOST", "10.128.0.81") + ":" + os.environ.get("KONG_PORT", "8000")
 PATH_VAR = PATH_API_GATEWAY + "/variables"
+PATH_PLACES=PATH_API_GATEWAY+"/places"
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_URL = '/static/'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "/login/auth0"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "https://dev-7nabyxneruxn0t0t.us.auth0.com/v2/logout?returnTo=http%3A%2F%2F35.194.45.9:8080"
+
+SOCIAL_AUTH_TRAILING_SLASH = False  # Remove end slash from routes
+SOCIAL_AUTH_AUTH0_DOMAIN = 'dev-7nabyxneruxn0t0t.us.auth0.com'
+SOCIAL_AUTH_AUTH0_KEY = '99oTuO43LkVqPidfJBjYidRB0p7yc3O5'
+SOCIAL_AUTH_AUTH0_SECRET = '-QtnaBmvNc2iYsZn--E8oKQK7jk6mY7aql4DCdyZrEML0FCeK3o1gwZzFqG_bCmN'
+
+SOCIAL_AUTH_AUTH0_SCOPE = [
+    'openid',
+    'profile',
+    'email',
+    'role',
+]
+
+AUTHENTICATION_BACKENDS = {
+    'ofipensiones.auth0backend.Auth0',
+    'django.contrib.auth.backends.ModelBackend',
+}
